@@ -17,7 +17,7 @@ class FilterableArtistsContainer extends React.Component{
 	  return (
 	    <div>
 	      <FilterInput updateValue ={this.changeFilterValue}/>
-	      <Artists artists={this.props.artists.filter(artist => artist.name.match(this.state.filterValue))} />
+	      <Artists artists={this.props.artists.filter(artist => artist.name.toLowerCase().match(this.state.filterValue.toLowerCase()))} />
 	    </div>
 	  )
 }
