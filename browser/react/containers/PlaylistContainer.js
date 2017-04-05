@@ -5,22 +5,26 @@ import axios from 'axios';
 class PlaylistContainer extends React.Component{
 	constructor(props){
 		super(props);
-		this.state={playlist: ''};
+		this.state={
+			playlist: '',
+			disabled: true
+		};
 		this.changePlaylist = this.changePlaylist.bind(this);
 		this.onClick = this.onClick.bind(this)
 
 	}
 
 	changePlaylist(event){
-		this.setState({playlist: event.target.value});
-		console.log('playlist change = ', this.state.playlist)
+		const playlist = event.target.value;
+		const disabled = (playlist.length < 16 && playlist.length > 0) ? false : true;
+		this.setState({disabled, playlist});
 	}
 
-	onClick(){
+	onClick(event){
+		event.preventDefault();
 		axios.post('/api/playlists', {name: this.state.playlist})
 		.then(res => res.data)
 		.then((playlist)=> {
-			console.log('playlist = ', playlist)
 		})
 	}
 
@@ -29,7 +33,7 @@ class PlaylistContainer extends React.Component{
 		return(
 			<div>
 
-				<Playlist onClick={this.onClick} onChange={this.changePlaylist} value={this.state.playlist}/>
+				<Playlist disabled={this.state.disabled} onClick={this.onClick} onChange={this.changePlaylist} value={this.state.playlist}/>
 			</div>
 
 		)
